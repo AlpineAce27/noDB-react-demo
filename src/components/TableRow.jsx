@@ -2,21 +2,43 @@ import ModeButtons from './ModeButtons.jsx'
 import Description from './Description.jsx'
 import Rate from './Rate.jsx'
 import Hours from './Hours.jsx'
+import {useState} from 'react'
+
 
 const formatCurrency = (number) => {
     return new Intl.NumberFormat('us-EN', { style: 'currency', currency: 'USD' }).format(number);
   }
+
 const TableRow = (props) => {
 
-    console.log(props)
+    //import the delete row functionality to send down the parent/child chain
+    const deleteRow = props.deleteRow
+    
+    //setting up state values
+    const [editMode, setEditMode] = useState(props.initialEditMode)
+    const [description, setDescription] = useState(props.initialInvoiceData.description)
+    const [rate, setRate] = useState(props.initialInvoiceData.rate)
+    const [hours, setHours] = useState(props.initialInvoiceData.hours)
+    
+    //console.log(props)
 
+    const changeToEditMode = () => {
+        setEditMode(true)
+    }
+    const changeToNormalMode = () => {
+        setEditMode(false)
+    }
+
+    //this is what will render when the TableRow function is called. In the table this is called multiple times, making multiple rows
     return (
        <tr>
-        <ModeButtons isEditing={props.initialEditMode} />
-        <Description isEditing={props.initialEditMode} description={props.initialInvoiceData.description}/>
-        <Rate isEditing={props.initialEditMode} rate={props.initialInvoiceData.rate}/>
-        <Hours isEditing={props.initialEditMode} hours={props.initialInvoiceData.hours}/>
-        <td>{formatCurrency(props.initialInvoiceData.rate * props.initialInvoiceData.hours)}</td>
+        <ModeButtons isEditing={editMode} editFunction = {changeToEditMode} saveFunction = {changeToNormalMode} deleteRow = {deleteRow}/>
+        <Description isEditing={editMode} description={description} setDescription = {setDescription}/>
+        <Rate isEditing={editMode} rate={rate} setRate = {setRate}/>
+        <Hours isEditing={editMode} hours={hours} setHours = {setHours}/>
+        <td>{formatCurrency(rate * hours)}</td> 
+        {/*Amount does not have a dedicated component, so we have to create another table data tag, and do the
+        math for the amount inside using the properties passed in from the parent object. (we also format it to be be a currency)  */}
        </tr>
     )
 

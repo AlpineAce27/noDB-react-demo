@@ -6,20 +6,21 @@ const formatCurrency = (number) => {
 
 const Rate = (props) => {
     const isEditing = props.isEditing
-    const rate = formatCurrency(props.rate) //the format currency would change 5.3492 to $5.35
+    const setRate = props.setRate
+    const rate = props.rate //the format currency would change 5.3492 to $5.35
 
     //you could also set this up using destructuring
     
     if(isEditing == true){
         return (
             <td>
-                <input type="text" value={rate}/>/hr
+                <input type="text" value={rate} onChange={(e)=> setRate(e.target.value)}/>/hr
             </td>
         )
     }else{
         return (
             <td>
-                {rate}/hr
+                {formatCurrency(rate)}/hr
             </td>
         )
     }

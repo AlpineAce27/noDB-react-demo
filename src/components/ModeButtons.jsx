@@ -2,7 +2,7 @@ import React from 'react'
 
 const ModeButtons = (props) => {
 
-    const {isEditing} = props //uses destructuring to create the isEditing variable that the parent component provide
+    const {isEditing, editFunction, saveFunction, deleteRow} = props //uses destructuring to create the isEditing variable that the parent component provide
     //you could also do it like this "const isEditing = props.isEditing"
 
 
@@ -10,22 +10,18 @@ const ModeButtons = (props) => {
     if(isEditing == true){
         return (
         <td>
-            <button>Save</button>
+            <button onClick={saveFunction}>Save</button>
         </td>)
     }
     else{
         return (
         <td>
-            <button>Delete</button>
-            <button>Edit</button>
+            <button onClick={deleteRow}>Delete</button>
+            <button onClick={editFunction}>Edit</button>
         </td>
         )
     }
 
-
-  return (
-    <div>ModeButtons</div>
-  )
 }
 
 export default ModeButtons
